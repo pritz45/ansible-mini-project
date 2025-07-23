@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+
+  frontend:
+    container_name: food-frontend
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+    networks:
+      - food-del-net
+
+  backend:
+    container_name: food-backend
+    build:
+      context: ./backend
+    ports:
+      - "4000:4000"
+    networks:
+      - food-del-net
+
+  admin:
+    container_name: food-admin
+    build:
+      context: ./admin
+    ports:
+      - "5174:5174"
+    networks:
+      - food-del-net
+
+  nginx:
+    container_name: nginx-container
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
+    networks:
+      - food-del-net
+    depends_on:
+      - frontend
+      - backend
+      - admin
+
+networks:
+  food-del-net:
+    external: true
